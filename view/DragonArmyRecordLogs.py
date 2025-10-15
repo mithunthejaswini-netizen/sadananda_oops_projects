@@ -11,8 +11,9 @@ class DragonArmyRecordLogs:
     (dragon_type, dragon_combat_stats).
     """
     
-    def log_records(self):
-            """
+    @classmethod
+    def log_records(cls, dragon_army_stats):
+        """
         Log each dragon type and its combat statistics.
 
         This method iterates over the dragon records and prints
@@ -21,14 +22,19 @@ class DragonArmyRecordLogs:
         :return: None
         :rtype: NoneType
         """
-        
-        for dragon_type, dragon_combat_stats in self:
-            print(dragon_type)
+        for dragon_type, dragon_combat_stats in dragon_army_stats:
+            
+            average = DragonArmyRecordLogs.get_average_combat_stats(dragon_combat_stats)
+            
+            print(f'{dragon_type}::({average[0]:.2f}/{average[1]:.2f}/{average[2]:.2f})'  )
             
             for stats in dragon_combat_stats:
                 print('\t\t',str(stats))
+            
+            print('')
                 
-    def average_combact_stats(self, print_to_stderr=None):
+    @classmethod
+    def get_average_combat_stats(cls, dragon_combat_stats):
         
         """
         Compute and optionally display the average combat statistics for each dragon type.
@@ -44,19 +50,25 @@ class DragonArmyRecordLogs:
         :rtype: dict
         """
         
-        average_combact = {}
-
-        for dragon_type, dragon_combat_stats in self:    
-            
-            first_combact = dragon_combat_stats.pop()
-            
-            for stats in dragon_combat_stats:
-                
-                first_combact+= stats
-                
-                if print_to_stderr:
-                    print('\t\t',str(stats))
+        t = ('damage', 'health', 'armor')
         
-            average_combact[dragon_type] = list(first_combact)
+        average_combat = dict.fromkeys(t, 0.0)
+        
+        for _stats_obj in dragon_combat_stats:
+            stats = list(_stats_obj)
+            for name, value in zip(t, stats):
+                average_combat[name]+= value
+                
+        total_length = len(dragon_combat_stats)
+        average = (
+                average_combat['damage']/total_length, 
+                average_combat['health']/total_length, 
+                average_combat['armor']/total_length, 
+                )
+
+        return average
             
-            print(average_combact, 'sadananda maharaj')
+        
+        
+
+            

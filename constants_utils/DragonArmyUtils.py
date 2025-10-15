@@ -22,16 +22,17 @@ def check_types(_types=(int,)):
         @wraps(func)
         def _decorator(*args, **kwargs):
         
-           
-            _args = args[1:] # To exclude first self i.e. instance 
+            _args = args[1:][0] # To exclude first self i.e. instance 
             
             assert  len(_args)==len(_types),'Number of parameters does not match'
 
             for _type, _arg in zip(_types, _args):
+                
                 if not isinstance(_arg, _type):
                     raise TypeError(
                                     'Arguments passed does not match the type expected'
                     )
+                    
             return func(*args, **kwargs)
         
         return _decorator

@@ -1,60 +1,40 @@
-import argparse
-
+import sys
 from controller.DragonArmyManager import DragonArmyBuilder
+        
+def main(args):
 
-def build_argument_parse():
-
-    parser = argparse.ArgumentParser(
-                                    prog='Dragon Army',
-                                    description='Create or update a Dragon Army unit with defined battle attributes.',
-                                    formatter_class=argparse.ArgumentDefaultsHelpFormatter
-                                    )
-    parser.add_argument(
-                        'army_type', 
-                        metavar='army_type',
-                        help='type of the dragon army (usually color name) : (str)'
-                        )
-                        
-    parser.add_argument(
-                        'name', 
-                        metavar='name',
-                        help='Name of the dragon army : (str)'
-                        )
-                        
-    parser.add_argument(
-                        'damage', 
-                        type=int,
-                        metavar='dmage',
-                        help='dmage of the dragon army'
-                        )
-    parser.add_argument(
-                        'health', 
-                        type=int,
-                        metavar='health',
-                        help='health of the dragon army'
-                        )
-                        
-    parser.add_argument(
-                        'armor',
-                        type=int,                    
-                        metavar='armor',
-                        help='armor of the dragon army'
-                        )
-    return parser
+    if len(args)==5:        
+        try:
+            args[2] = int(args[2]) if args[2] != 'None' else None
+            args[3] = int(args[3]) if args[3] != 'None' else None
+            args[4] = int(args[4]) if args[4] != 'None' else None
+        except:
+            print('Type does not match')
+                 
+        _type, name, damage, health, armor = args[0], args[1], args[2], args[3], args[4]
+        DragonArmyBuilder().update_dragon_army_record((_type, name, damage, health, armor))
+        
+    else:    
+        if args[0].upper()=='EXIT':
+            print('')
+            print('DRAGON ARMY COMBAT STATS')
+            print('')
+            DragonArmyBuilder().display_strength()
+            sys.exit(1)
     
-def main(*args):
-                
-    DragonArmyBuilder().update_dragon_army_record(*args)
-    DragonArmyBuilder().display_strength()
- 
 if __name__=='__main__':  
-         
-    parser = build_argument_parse()
-    args = parser.parse_args()
-    try:
-        main(args.army_type, args.name, args.damage, args.health, args.armor)
-    except  TypeError as e:
-        print(e)
-        system.exit(-1)
+
+    print('')
+    print('Enter the Dragon Army Details')
+    print('ARMY TYPE -: ARMY NAME  |  DAMAGE  |  HEALTH | ARMOR')
+    print('')
+    
+    while True:
+        try:
+            army_details = input('')
+            main(army_details.split(' '))
+        except  TypeError as e:
+            print(e)
+            sys.exit(-1)
     
     

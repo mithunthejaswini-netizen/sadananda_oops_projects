@@ -1,5 +1,6 @@
 from model.DragonArmyRecord import *
 from constants_utils.DragonArmyUtils import check_types
+from view.DragonArmyRecordLogs import DragonArmyRecordLogs
 
 class DragonArmyBuilder:
 
@@ -20,7 +21,7 @@ class DragonArmyBuilder:
     dragon_army = DragonArmyRecord()
         
     @classmethod
-    @check_types((str, str, int, int, int))
+    @check_types((str, str, (int, type(None)), (int, type(None)), (int, type(None))))
     def update_dragon_army_record(cls, *args):
     
         """
@@ -48,9 +49,8 @@ class DragonArmyBuilder:
         --------
         >>> DragonArmyBuilder.update_dragon_army_record('Red', 'Inferno', 250, 3000, 50)
         """
-        
-    
-        _type, name, *combat_stats = args
+
+        _type, name, *combat_stats = args[0]
         DragonArmyBuilder.dragon_army(_type, name, *combat_stats)
         
     
@@ -75,4 +75,4 @@ class DragonArmyBuilder:
         
         """
         
-        DragonArmyBuilder.dragon_army.display_strength()
+        DragonArmyRecordLogs.log_records(DragonArmyBuilder.dragon_army)

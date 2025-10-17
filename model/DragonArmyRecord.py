@@ -203,8 +203,6 @@ class DragonArmyRecord(metaclass=Singleton):
         for combats in army_combat:
             for index, stats in enumerate(combats):
                 average[index]+= stats 
-
-        print(average)
         
         average = average if total_length <= 1 else [stat/total_length for stat in average]
         return average        

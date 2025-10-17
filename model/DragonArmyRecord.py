@@ -39,9 +39,9 @@ class  DragonArmyCombatStats:
 
     def __init__(self, name, damage=None, health=None, armor=None) -> None:
         self._name = name
-        self._damage = DragonArmyDefaultStatsEnum.damage.value if not damage else damage
-        self._health = DragonArmyDefaultStatsEnum.health.value if not health else health
-        self._armor = DragonArmyDefaultStatsEnum.armor.value if not armor else armor
+        self._damage = damage
+        self._health = health
+        self._armor = armor
         
     @property
     def name(self):
@@ -127,16 +127,17 @@ class  DragonArmyCombatStats:
         :rtype: str
         """
         
-        return f'{self._name} {self._damage} {self._health} {self._armor}'
+        return f'-{self._name} -> damage : {self._damage}, health: {self._health}, armor: {self._armor}'
 
     
 class DragonArmyRecord(metaclass=Singleton):
         
-    __slots__ = ('army_type', '_iterator_index')
+    __slots__ = ('army_type', 'average_stats')
 
     def __init__(self):
         
         self.army_type = {}        
+        self.average_stats = dict()
 
     def __call__(self, _type, name, *combat_stats):
     
@@ -165,10 +166,14 @@ class DragonArmyRecord(metaclass=Singleton):
         :rtype: NoneType
         """
         
+        damage = DragonArmyDefaultStatsEnum.damage.value if not combat_stats[0] else combat_stats[0]
+        health = DragonArmyDefaultStatsEnum.health.value if not combat_stats[1] else combat_stats[1]
+        armor = DragonArmyDefaultStatsEnum.armor.value if not combat_stats[2] else combat_stats[2]
+        
         if _type in self.army_type:
             
             combat_record = self.army_type[_type]
-            new_record = DragonArmyCombatStats(name.capitalize(), *combat_stats)
+            new_record = DragonArmyCombatStats(name.capitalize(), damage, health, armor)
             
             if new_record in combat_record:
                 combat_record.remove(new_record)
@@ -177,18 +182,32 @@ class DragonArmyRecord(metaclass=Singleton):
             
         else:
             _set = list()
-            _set.append(DragonArmyCombatStats(name, *combat_stats))
+            _set.append(DragonArmyCombatStats(name, damage, health, armor))
             self.army_type[_type] = _set
             
         self._sort_dragon_army_records()
             
     def _sort_dragon_army_records(self):
-        
-
 
         for key in self.army_type:
             l = self.army_type[key]
             self.army_type[key] = sorted(l, key=lambda x: x.name)
+
+    def get_average_stats_by_type(self, _type):
+        
+        total_length = len(self.army_type[_type])
+        
+        army_combat = self.army_type[_type]
+        average = [0] * 3
+
+        for combats in army_combat:
+            for index, stats in enumerate(combats):
+                average[index]+= stats 
+
+        print(average)
+        
+        average = average if total_length <= 1 else [stat/total_length for stat in average]
+        return average        
             
     def __iter__(self):
     

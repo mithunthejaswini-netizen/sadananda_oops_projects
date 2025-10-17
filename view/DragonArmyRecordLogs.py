@@ -24,49 +24,16 @@ class DragonArmyRecordLogs:
         """
         for dragon_type, dragon_combat_stats in dragon_army_stats:
             
-            average = DragonArmyRecordLogs.get_average_combat_stats(dragon_combat_stats)
+            average = dragon_army_stats.get_average_stats_by_type(dragon_type)
             
             print(f'{dragon_type}::({average[0]:.2f}/{average[1]:.2f}/{average[2]:.2f})'  )
             
             for stats in dragon_combat_stats:
-                print('\t\t',str(stats))
+                print('   ',str(stats))
             
             print('')
                 
-    @classmethod
-    def get_average_combat_stats(cls, dragon_combat_stats):
-        
-        """
-        Compute and optionally display the average combat statistics for each dragon type.
-
-        The method aggregates all combat stats for each dragon type and stores
-        their average in a dictionary. Optionally, it prints each stat to stderr
-        (or standard output, depending on implementation) if ``print_to_stderr`` is True.
-
-        :param print_to_stderr: If True, prints intermediate stats to stderr (or stdout).
-        :type print_to_stderr: bool or None
-
-        :return: A dictionary mapping each dragon type to its computed average combat statistics.
-        :rtype: dict
-        """
-        
-        t = ('damage', 'health', 'armor')
-        
-        average_combat = dict.fromkeys(t, 0.0)
-        
-        for _stats_obj in dragon_combat_stats:
-            stats = list(_stats_obj)
-            for name, value in zip(t, stats):
-                average_combat[name]+= value
-                
-        total_length = len(dragon_combat_stats)
-        average = (
-                average_combat['damage']/total_length, 
-                average_combat['health']/total_length, 
-                average_combat['armor']/total_length, 
-                )
-
-        return average
+ 
             
         
         

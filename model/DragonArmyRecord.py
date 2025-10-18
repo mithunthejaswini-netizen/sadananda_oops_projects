@@ -188,12 +188,71 @@ class DragonArmyRecord(metaclass=Singleton):
         self._sort_dragon_army_records()
             
     def _sort_dragon_army_records(self):
+        """
+        Sorts the dragon records in each army type by name.
+
+        This method iterates over all army types stored in the ``self.army_type`` 
+        dictionary and sorts the list of dragon objects associated with each type 
+        alphabetically based on their ``name`` attribute.
+
+        Notes
+        -----
+        - The method modifies ``self.army_type`` in place.
+        - It assumes each element in the lists is an object with a ``name`` attribute.
+
+        Example
+        -------
+        Suppose ``self.army_type`` is:
+        {
+            "RED": [Dragon(name="Zoltan"), Dragon(name="Arthas")],
+            "BLUE": [Dragon(name="Mira"), Dragon(name="Balin")]
+        }
+
+        After calling this method:
+        {
+            "RED": [Dragon(name="Arthas"), Dragon(name="Zoltan")],
+            "BLUE": [Dragon(name="Balin"), Dragon(name="Mira")]
+        }
+        """
 
         for key in self.army_type:
             l = self.army_type[key]
             self.army_type[key] = sorted(l, key=lambda x: x.name)
 
     def get_average_stats_by_type(self, _type):
+    
+        """
+        Computes the average combat statistics for dragons of a given army type.
+
+        Parameters
+        ----------
+        _type : str
+            The type of dragon army for which average statistics are to be computed.
+            Must be a valid key in ``self.army_type``.
+
+        Returns
+        -------
+        list of float
+            A list containing the average values of each combat statistic 
+            (e.g., attack, defense, health). If there is only one or zero 
+            dragons of the given type, the method returns their raw or zeroed stats.
+
+        Notes
+        -----
+        - Each dragon in ``self.army_type[_type]`` is expected to be iterable 
+          (e.g., a list or tuple) containing numerical stats.
+        - The method sums corresponding indices across all dragons and divides 
+          by the total number of dragons to compute averages.
+
+        Example
+        -------
+        >>> self.army_type["RED"] = [
+        ...     [100, 200, 300],
+        ...     [150, 250, 350]
+        ... ]
+        >>> self.get_average_stats_by_type("RED")
+        [125.0, 225.0, 325.0]
+        """
         
         total_length = len(self.army_type[_type])
         
@@ -292,5 +351,3 @@ class DragonArmyRecord(metaclass=Singleton):
                 raise StopIteration
     
             return key, self.army_record[key]
-
-

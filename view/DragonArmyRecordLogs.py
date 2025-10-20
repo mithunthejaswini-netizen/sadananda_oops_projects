@@ -18,7 +18,9 @@ class DragonArmyRecordLogs:
 
         This method iterates over the dragon records and prints
         each dragon type followed by its associated combat stats.
-
+        
+        :param dragon_army_stats: DragonArmyRecord which holds the records of all the armies based on the type as a key
+        :type  dragon_army_stats: DragonArmyRecord
         :return: None
         :rtype: NoneType
         """

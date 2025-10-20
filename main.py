@@ -104,11 +104,11 @@ sadananda = ['Azure D001 41 231 9',
 
 def main(args):
 
-    if len(args)==5:        
+    if len(args)==5: # Actual input with (type, name, damage, health, armor)
         try:
-            args[2] = int(args[2]) if args[2] != 'None' else None
-            args[3] = int(args[3]) if args[3] != 'None' else None
-            args[4] = int(args[4]) if args[4] != 'None' else None
+            args[2] = int(args[2]) if args[2] != 'None' else None # conver the army stats into integer value
+            args[3] = int(args[3]) if args[3] != 'None' else None # conver the army stats into integer value
+            args[4] = int(args[4]) if args[4] != 'None' else None # conver the army stats into integer value
         except:
             print('Type does not match')
                  
@@ -116,7 +116,7 @@ def main(args):
         DragonArmyBuilder().update_dragon_army_record((_type, name, damage, health, armor))
         
     else:    
-        if args[0].upper()=='EXIT':
+        if args[0].upper()=='EXIT': # this is to exit and print the average value
             print('')
             print('DRAGON ARMY COMBAT STATS')
             print('')

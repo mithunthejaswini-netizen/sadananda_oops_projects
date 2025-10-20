@@ -18,20 +18,20 @@ class  DragonArmyCombatStats:
     in-place addition for combining stats, iteration over numerical
     values, and readable string formatting.
 
-    The class uses ``__slots__`` to minimize memory usage by preventing
+    The class uses '__slots__' to minimize memory usage by preventing
     the dynamic creation of instance attributes.
 
     :param name: The name of the dragon.
     :type name: str
     :param damage: The damage value of the dragon. If not provided, a default
                    value from :class:`DragonArmyDefaultStatsEnum` is used.
-    :type damage: int or float, optional
+    :type damage: int
     :param health: The health value of the dragon. Defaults to a predefined
                    value if not specified.
-    :type health: int or float, optional
+    :type health: int
     :param armor: The armor value of the dragon. Defaults to a predefined
                   value if not specified.
-    :type armor: int or float, optional
+    :type armor: int
     
     """
     
@@ -132,12 +132,25 @@ class  DragonArmyCombatStats:
     
 class DragonArmyRecord(metaclass=Singleton):
         
-    __slots__ = ('army_type', 'average_stats')
+    """
+    
+    This class is to maintain the dragon army record.
+    
+    it's an singleton class where it encapsulates the DragonArmyCombatStats class objects within it.
+    
+    it uses dragon army type as a key, this class also calculates average stats of dragon army per type
+    
+       
+    """
+    
+    # This is to restrict number of attributes getting added dynamically to tin instance DragonArmyRecord
+    
+    __slots__ = ('army_type')
 
     def __init__(self):
-        
+    
+        # create an emtpy dictionary for army type
         self.army_type = {}        
-        self.average_stats = dict()
 
     def __call__(self, _type, name, *combat_stats):
     
@@ -204,13 +217,13 @@ class DragonArmyRecord(metaclass=Singleton):
         -------
         Suppose ``self.army_type`` is:
         {
-            "RED": [Dragon(name="Zoltan"), Dragon(name="Arthas")],
+            "RED":  [Dragon(name="Zoltan"), Dragon(name="Arthas")],
             "BLUE": [Dragon(name="Mira"), Dragon(name="Balin")]
         }
 
         After calling this method:
         {
-            "RED": [Dragon(name="Arthas"), Dragon(name="Zoltan")],
+            "RED":  [Dragon(name="Arthas"), Dragon(name="Zoltan")],
             "BLUE": [Dragon(name="Balin"), Dragon(name="Mira")]
         }
         """
@@ -339,7 +352,7 @@ class DragonArmyRecord(metaclass=Singleton):
             It is an magic method used for iterator protocol
             This will iterate over all the dictionary elements and return in key value pair
             :return: None
-            :rtype: tuple (key, )
+            :rtype: tuple (key, army_record)
             
             """
                 

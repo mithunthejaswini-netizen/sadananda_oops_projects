@@ -1,0 +1,7 @@
+Red::(47.50/251.00/10.00)
+ -A -> damage: 50, health: 252, armor: 10
+ -B -> damage: 45, health: 250, armor: 10
+ Blue::(57.67/254.33/17.67)
+ -A -> damage: 60, health: 260, armor: 20
+ -B -> damage: 59, health: 255, armor: 18
+ -C -> damage: 54, health: 248, armor: 15
